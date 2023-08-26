@@ -8,7 +8,7 @@ on:
   pull_request_target:
     types: [labeled]
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '0 9 * * FRI'
   workflow_dispatch:
 
 env:
@@ -34,11 +34,8 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Login to GitHub Container Registry (ghcr.io)
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.GHCR_USERNAME }}
-          password: ${{ secrets.GHCR_PAT }}
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       -
         name: Build and push
         run: make all.ghcr BUILDX_FLAGS="--cache-from=type=gha --cache-to=type=gha"
