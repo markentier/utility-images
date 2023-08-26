@@ -33,10 +33,10 @@ image.ghcr:
 		--output=type=registry .
 
 all.ghcr:
+	rootdir=$$(pwd); \
 	for project in $(PROJECTS); do \
-		pushd utilities/$$project; \
+		cd $$rootdir/utilities/$$project; \
 		$(MAKE) image.ghcr; \
-		popd; \
 	done
 
 login:
